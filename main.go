@@ -9,6 +9,11 @@ import (
 
 func main() {
 
+	if err := rawMode(); err != nil {
+		fmt.Printf("Error: %s\n", err)
+		os.Exit(1)
+	}
+
 	r := bufio.NewReader(os.Stdin)
 
 	for {
