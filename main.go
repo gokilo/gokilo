@@ -9,10 +9,12 @@ import (
 
 func main() {
 
-	if err := rawMode(); err != nil {
+	restoreFunc, err := rawMode()
+	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 		os.Exit(1)
 	}
+	defer restoreFunc()
 
 	r := bufio.NewReader(os.Stdin)
 
