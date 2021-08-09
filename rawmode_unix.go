@@ -22,6 +22,7 @@ func rawMode() (func(), error) {
 
 	termios.Lflag = termios.Lflag &^ (unix.ECHO | unix.ICANON | unix.ISIG | unix.IEXTEN)
 	termios.Iflag = termios.Iflag &^ (unix.IXON | unix.ICRNL)
+	termios.Oflag = termios.Oflag &^ (unix.OPOST)
 
 	if err := unix.IoctlSetTermios(unix.Stdin, unix.TCSETSF, termios); err != nil {
 		return nil, fmt.Errorf("rawMode: error setting terminal flags: %w", err)
