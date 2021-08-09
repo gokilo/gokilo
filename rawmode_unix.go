@@ -21,8 +21,9 @@ func rawMode() (func(), error) {
 	copy := *termios
 
 	termios.Lflag = termios.Lflag &^ (unix.ECHO | unix.ICANON | unix.ISIG | unix.IEXTEN)
-	termios.Iflag = termios.Iflag &^ (unix.IXON | unix.ICRNL)
+	termios.Iflag = termios.Iflag &^ (unix.IXON | unix.ICRNL | unix.BRKINT | unix.INPCK | unix.ISTRIP)
 	termios.Oflag = termios.Oflag &^ (unix.OPOST)
+	termios.Cflag = termios.Cflag | unix.CS8
 
 	if err := unix.IoctlSetTermios(unix.Stdin, unix.TCSETSF, termios); err != nil {
 		return nil, fmt.Errorf("rawMode: error setting terminal flags: %w", err)
