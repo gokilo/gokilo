@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
-	"unicode"
 )
 
-func processKey(key rune) {
+func processKey(key Key) {
 
-	if unicode.IsControl(key) {
-		fmt.Printf("%d\r\n", key)
-	} else {
-		fmt.Printf("%d (%c)\r\n", key, key)
+	switch key.KeyType {
+	case CtrlKey:
+		fmt.Printf("Control Key: %d\r\n", key.Key)
+	case RegKey:
+		fmt.Printf("Regular Key: %d (%c)\r\n", key.Key, key.Key)
 	}
 
-	if key == 'q' {
+	if key.KeyType == CtrlKey && key.Key == KeyCtrlQ {
 		safeExit(nil)
 	}
 }
