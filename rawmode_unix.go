@@ -20,7 +20,7 @@ func rawMode() (func(), error) {
 
 	copy := *termios
 
-	termios.Lflag = termios.Lflag &^ (unix.ECHO | unix.ICANON | unix.ISIG)
+	termios.Lflag = termios.Lflag &^ (unix.ECHO | unix.ICANON | unix.ISIG | unix.IEXTEN)
 	termios.Iflag = termios.Iflag &^ (unix.IXON)
 
 	if err := unix.IoctlSetTermios(unix.Stdin, unix.TCSETSF, termios); err != nil {
