@@ -8,14 +8,28 @@ import (
 	"unicode"
 )
 
+var safeExit func(error)
+
 func main() {
 
 	restoreFunc, err := rawMode()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s\r\n", err)
-		os.Exit(1)
+
+	safeExit = func(err error) {
+		if restoreFunc != nil {
+			restoreFunc()
+		}
+
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %s\r\n", err)
+			os.Exit(1)
+		}
+		os.Exit(0)
 	}
-	defer restoreFunc()
+	defer safeExit(nil)
+
+	if err != nil {
+		safeExit(err)
+	}
 
 	r := bufio.NewReader(os.Stdin)
 
@@ -25,8 +39,7 @@ func main() {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			fmt.Fprintf(os.Stderr, "Error: reading key from Stdin: %s\r\n", err)
-			os.Exit(1)
+			safeExit(err)
 		}
 		if unicode.IsControl(ru) {
 			fmt.Printf("%d\r\n", ru)
