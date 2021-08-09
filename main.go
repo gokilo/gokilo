@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"unicode"
 )
 
 func main() {
@@ -19,7 +20,7 @@ func main() {
 	r := bufio.NewReader(os.Stdin)
 
 	for {
-		b, err := r.ReadByte()
+		ru, _, err := r.ReadRune()
 
 		if err == io.EOF {
 			break
@@ -27,8 +28,13 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Error: reading key from Stdin: %s\n", err)
 			os.Exit(1)
 		}
+		if unicode.IsControl(ru) {
+			fmt.Printf("%d\n", ru)
+		} else {
+			fmt.Printf("%d (%c)\n", ru, ru)
+		}
 
-		if b == 'q' {
+		if ru == 'q' {
 			break
 		}
 	}
