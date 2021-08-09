@@ -30,7 +30,7 @@ func rawMode() (func(), error) {
 
 	return func() {
 		if err := unix.IoctlSetTermios(unix.Stdin, unix.TCSETSF, &copy); err != nil {
-			fmt.Fprintf(os.Stderr, "rawMode: error restoring originl console settings: %s", err)
+			fmt.Fprintf(os.Stderr, "rawMode: error restoring originl console settings: %s\r\n", err)
 		}
 	}, nil
 }

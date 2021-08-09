@@ -12,7 +12,7 @@ func main() {
 
 	restoreFunc, err := rawMode()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Error: %s\r\n", err)
 		os.Exit(1)
 	}
 	defer restoreFunc()
@@ -25,13 +25,13 @@ func main() {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			fmt.Fprintf(os.Stderr, "Error: reading key from Stdin: %s\n", err)
+			fmt.Fprintf(os.Stderr, "Error: reading key from Stdin: %s\r\n", err)
 			os.Exit(1)
 		}
 		if unicode.IsControl(ru) {
-			fmt.Printf("%d\n", ru)
+			fmt.Printf("%d\r\n", ru)
 		} else {
-			fmt.Printf("%d (%c)\n", ru, ru)
+			fmt.Printf("%d (%c)\r\n", ru, ru)
 		}
 
 		if ru == 'q' {
